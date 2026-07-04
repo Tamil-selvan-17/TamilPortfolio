@@ -1,0 +1,60 @@
+[
+  {
+    "id": "nova-techset",
+    "company": "Nova Techset Pvt. Ltd.",
+    "role": "Associate Software Engineer (Full Stack)",
+    "location": "Chennai, India",
+    "startDate": "2022-06-01",
+    "endDate": null,
+    "progression": [
+      "Trainee",
+      "Junior Software Engineer",
+      "Associate Software Engineer"
+    ],
+    "highlights": [
+      {
+        "text": "Architected and delivered 5+ enterprise web applications using Angular, ASP.NET Core, SQL Server, Docker, and Redis, maintaining 99.9% production uptime."
+      },
+      {
+        "text": "Improved backend efficiency through Redis caching, SQL query optimization, indexing strategies, and architectural refinements.",
+        "metric": { "value": 15, "suffix": "%", "label": "efficiency gain" }
+      },
+      {
+        "text": "Reduced Angular UI load times via lazy loading, OnPush change detection, RxJS streams, and component-level profiling.",
+        "metric": { "value": 20, "suffix": "%", "label": "faster load times" }
+      },
+      {
+        "text": "Designed secure RESTful APIs with JWT authentication and RBAC middleware, hardening security across multiple production applications."
+      },
+      {
+        "text": "Implemented real-time collaboration features using SignalR, enabling live multi-user editing and synchronized workflows in publishing platforms."
+      },
+      {
+        "text": "Containerized applications using Docker and Docker Compose, standardizing deployments and eliminating environment inconsistencies."
+      },
+      {
+        "text": "Integrated AWS S3 with presigned URL workflows for secure, expiry-gated document storage across editorial and vendor platforms."
+      },
+      {
+        "text": "Built AI-powered chat assistant using SSE streaming and LLM API integration (Ollama), enabling real-time conversational UX in enterprise apps."
+      },
+      {
+        "text": "Established CI/CD pipelines via GitHub Actions, automating build, test, and Docker image deployment workflows."
+      },
+      {
+        "text": "Conducted code reviews, built reusable component libraries, and mentored junior developers — reducing post-release defects and improving team delivery quality."
+      }
+    ],
+    "techStack": [
+      "Angular",
+      ".NET Core",
+      "SQL Server",
+      "Docker",
+      "Redis",
+      "AWS S3",
+      "SignalR",
+      "JWT",
+      "Ollama AI"
+    ]
+  }
+]

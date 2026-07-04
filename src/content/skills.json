@@ -1,0 +1,54 @@
+[
+  {
+    "category": "Frontend",
+    "icon": "Code2",
+    "skills": [
+      { "name": "Angular 14-20", "level": 5 },
+      { "name": "TypeScript", "level": 5 },
+      { "name": "JavaScript (ES6+)", "level": 5 },
+      { "name": "RxJS", "level": 4 },
+      { "name": "HTML5 & CSS3", "level": 5 },
+      { "name": "Tailwind CSS", "level": 4 },
+      { "name": "Bootstrap", "level": 4 },
+      { "name": "Angular Material", "level": 4 },
+      { "name": "ApexCharts", "level": 4 },
+      { "name": "TinyMCE", "level": 4 }
+    ]
+  },
+  {
+    "category": "Backend",
+    "icon": "Server",
+    "skills": [
+      { "name": "ASP.NET Core", "level": 5 },
+      { "name": "C#", "level": 5 },
+      { "name": "Web API", "level": 5 },
+      { "name": "SignalR", "level": 4 },
+      { "name": "Entity Framework Core", "level": 4 },
+      { "name": "JWT Auth", "level": 5 },
+      { "name": "Clean Architecture", "level": 4 }
+    ]
+  },
+  {
+    "category": "Database & Infra",
+    "icon": "Database",
+    "skills": [
+      { "name": "SQL Server", "level": 5 },
+      { "name": "Redis", "level": 4 },
+      { "name": "MongoDB", "level": 3 },
+      { "name": "Docker", "level": 4 },
+      { "name": "AWS S3", "level": 4 },
+      { "name": "GitHub Actions", "level": 4 }
+    ]
+  },
+  {
+    "category": "Tools & AI",
+    "icon": "Terminal",
+    "skills": [
+      { "name": "Ollama / LLM APIs", "level": 4 },
+      { "name": "SSE Streaming", "level": 4 },
+      { "name": "Git", "level": 5 },
+      { "name": "Postman / Swagger", "level": 5 },
+      { "name": "Agile / Scrum", "level": 4 }
+    ]
+  }
+]

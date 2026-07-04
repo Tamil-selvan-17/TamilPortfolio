@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "vms-platform",
+    "title": "Vendor Management System (VMS)",
+    "subtitle": "Publishing Workforce Platform",
+    "stack": ["Angular 19", ".NET Core 8", "SQL Server", "Redis", "Docker", "JWT", "AI Assistant"],
+    "summary": "Designed and delivered a full-cycle publishing workforce platform serving 300+ active freelancers. Features include structured onboarding, competency assessment engine, role-based file access control, and automated billing workflows based on word counts. Integrated an AI-powered chat assistant for contextual vendor guidance.",
+    "impact": [
+      { "value": 300, "suffix": "+", "label": "Active Freelancers" },
+      { "value": 100, "suffix": "%", "label": "Automated Billing" }
+    ],
+    "problem": "Manual vetting and onboarding of freelancers took days and billing was completely manual and error-prone.",
+    "solution": "Built a competency assessment engine with real-time scoring and automated result tracking, reducing vendor vetting time from days to hours. Engineered invoice and billing workflows automating payment calculations based on word counts.",
+    "featured": true,
+    "links": {
+      "live": null,
+      "github": null
+    }
+  },
+  {
+    "slug": "nedit-platform",
+    "title": "NEDIT",
+    "subtitle": "XML Proofing Platform",
+    "stack": ["Angular 17", "TinyMCE", "SignalR", ".NET Core", "SQL Server", "XML Processing"],
+    "summary": "Enterprise-grade content editing and proofing platform enabling end-to-end content management, XML validation, and workflow automation for publishing operations. Includes advanced rich-text editing, ICE Plugin-based change tracking, and real-time multi-user collaboration using SignalR.",
+    "impact": [
+      { "value": 100, "suffix": "%", "label": "XML Compliance" },
+      { "value": 0, "suffix": "ms", "label": "Real-time sync latency" }
+    ],
+    "problem": "Lack of real-time collaboration and accurate XML structural preservation during proofing.",
+    "solution": "Developed advanced rich-text editing using TinyMCE with text formatting and dynamic image replacement. Built ICE Plugin-based change tracking and real-time multi-user collaboration using SignalR.",
+    "featured": true,
+    "links": {
+      "live": null,
+      "github": null
+    }
+  },
+  {
+    "slug": "employee-dashboard",
+    "title": "Employee Profiling Dashboard",
+    "subtitle": "Analytics Platform",
+    "stack": ["Angular 19", "ApexCharts", ".NET Core", "Redis", "JWT", "SQL Server"],
+    "summary": "Built KPI analytics dashboard with RBAC, ApexCharts visualizations, and smart filters — improving leadership visibility into team productivity metrics by 30%. Led full frontend lifecycle from UI/UX design through responsive component development to production deployment.",
+    "impact": [
+      { "value": 30, "suffix": "%", "label": "Visibility Increase" },
+      { "value": 40, "suffix": "%", "label": "Reporting Effort Saved" }
+    ],
+    "problem": "Leadership lacked visibility into team productivity and aggregation queries were slow.",
+    "solution": "Implemented Redis caching for aggregation queries and automated Excel export, reducing manual reporting effort by 40%.",
+    "featured": true,
+    "links": {
+      "live": null,
+      "github": null
+    }
+  }
+]

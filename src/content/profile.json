@@ -1,0 +1,26 @@
+{
+  "name": "Tamilselvan G",
+  "initials": "TG",
+  "title": "Full Stack Software Engineer",
+  "taglines": [
+    "Angular Expert",
+    ".NET Core Developer",
+    "Cloud Enthusiast"
+  ],
+  "summary": "Full Stack Software Engineer with {{YEARS}}+ years of experience delivering secure, scalable enterprise web applications across the complete SDLC. Expert in Angular (14–20), ASP.NET Core (C#), SQL Server, Docker, and Redis, with measurable impact — 20% faster UI load times, 15% backend efficiency gains, and 99.9% production uptime. Experienced in REST API design, JWT security, SignalR real-time collaboration, AI integration, AWS S3, CI/CD automation, Clean Architecture, and Agile/Scrum delivery.",
+  "location": "porur,chennai,india",
+  "email": "tamilselvang00022@gmail.com",
+  "links": {
+    "github": "https://github.com/Tamil-selvan-17/Tamil-selvan-17",
+    "linkedin": "http://www.linkedin.com/in/tamil-selvan-7200206323-full-stack-developer/",
+    "twitter": null,
+    "website": null
+  },
+  "availability": {
+    "status": "open",
+    "label": "Available for new opportunities"
+  },
+  "resumeVersion": "v1.0",
+  "resumeUpdatedAt": "2026-07-03",
+  "resumeUrl": "/resume/Tamilselvan_G_Resume.pdf"
+}

@@ -1,0 +1,35 @@
+{
+  "seo": {
+    "title": "Tamilselvan G — Full Stack Engineer",
+    "titleTemplate": "%s | Tamilselvan G",
+    "description": "Full-stack engineer specializing in Angular and .NET Core. {{YEARS}}+ years building enterprise web applications with 99.9% uptime. Based in Chennai, India.",
+    "keywords": ["full stack engineer", "angular developer", "dotnet developer", "asp.net core", "typescript", "docker", "redis", "chennai"],
+    "siteUrl": "https://tamilselvan.dev",
+    "ogImage": "/og/og-default.png",
+    "twitterHandle": null
+  },
+  "nav": [
+    { "label": "About", "href": "/about" },
+    { "label": "Experience", "href": "/experience" },
+    { "label": "Projects", "href": "/projects" },
+    { "label": "Skills", "href": "/skills" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "features": {
+    "musicPlayer": true,
+    "commandPalette": true,
+    "cursorEffects": true
+  },
+  "music": [
+    {
+      "title": "Lo-Fi Study",
+      "artist": "Ambient Beats",
+      "src": "/music/lofi-study.mp3"
+    },
+    {
+      "title": "Deep Focus",
+      "artist": "Chillhop",
+      "src": "/music/deep-focus.mp3"
+    }
+  ]
+}
