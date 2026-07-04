@@ -48,7 +48,17 @@ export const CosmicZoomEngine = () => {
     let currentSpeed = 50
     
     // --- Cinematic State ---
-    let loopState: 'journey' | 'parked' | 'explosion' = 'journey'
+    let loopState: 'waiting_for_intro' | 'journey' | 'parked' | 'explosion' = 
+      (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('hasSeenIntro') === 'true') 
+        ? 'journey' : 'waiting_for_intro'
+        
+    const handleIntroFinished = () => {
+      if (loopState === 'waiting_for_intro') {
+        loopState = 'journey'
+      }
+    }
+    window.addEventListener('introFinished', handleIntroFinished)
+
     let stateTimer = 0
     let asteroid = { x: -6000, y: -3000, z: 6000, active: false }
     let particles: { x: number, y: number, z: number, vx: number, vy: number, vz: number, life: number, decay: number, color: string, type: 'spark' | 'fireball', size: number }[] = []
@@ -681,6 +691,7 @@ export const CosmicZoomEngine = () => {
     return () => {
       observer.disconnect()
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('introFinished', handleIntroFinished)
       cancelAnimationFrame(animationFrameId)
     }
   }, [])

@@ -7,9 +7,10 @@ import MountainVistaParallax from '@/components/ui/mountain-vista-bg'
 
 // Status messages that type out like a terminal
 const INITIALIZATION_STEPS = [
-  { label: 'System', value: 'Initializing', duration: 800 },
-  { label: 'Location', value: 'Searching', resolveTo: 'Chennai, India', duration: 1200 },
-  { label: 'Coordinates', value: 'Searching', resolveTo: '13.0827° N / 80.2707° E', duration: 1000 },
+  { label: 'System', value: 'Booting', duration: 600 },
+  { label: 'Vision', value: 'Loading', resolveTo: 'Architecting the Impossible', duration: 1000 },
+  { label: 'Focus', value: 'Analyzing', resolveTo: 'Next-Gen Web Experiences', duration: 1000 },
+  { label: 'Status', value: 'Checking', resolveTo: 'Available for Impact', duration: 800 },
 ]
 
 export function IntroGate() {
@@ -69,6 +70,7 @@ export function IntroGate() {
     setIsVisible(false)
     sessionStorage.setItem('hasSeenIntro', 'true')
     document.body.style.overflow = ''
+    window.dispatchEvent(new Event('introFinished'))
   }
 
   if (!isVisible) return null
@@ -93,13 +95,13 @@ export function IntroGate() {
           </div>
 
           {/* Corner brackets */}
-          <div className="absolute top-8 left-8 w-8 h-8 border-t-2 border-l-2 border-emerald-600/30 dark:border-blue-500/30" />
-          <div className="absolute top-8 right-8 w-8 h-8 border-t-2 border-r-2 border-emerald-600/30 dark:border-blue-500/30" />
-          <div className="absolute bottom-8 left-8 w-8 h-8 border-b-2 border-l-2 border-emerald-600/30 dark:border-blue-500/30" />
-          <div className="absolute bottom-8 right-8 w-8 h-8 border-b-2 border-r-2 border-emerald-600/30 dark:border-blue-500/30" />
+          <div className="absolute top-8 left-8 w-8 h-8 border-t-2 border-l-2 border-emerald-600/30" />
+          <div className="absolute top-8 right-8 w-8 h-8 border-t-2 border-r-2 border-emerald-600/30" />
+          <div className="absolute bottom-8 left-8 w-8 h-8 border-b-2 border-l-2 border-emerald-600/30" />
+          <div className="absolute bottom-8 right-8 w-8 h-8 border-b-2 border-r-2 border-emerald-600/30" />
 
           {/* Top Left Terminal HUD */}
-          <div className="absolute top-12 left-12 terminal-text text-[10px] sm:text-xs text-emerald-800 dark:text-blue-400 flex flex-col gap-2 tracking-widest">
+          <div className="absolute top-12 left-12 terminal-text text-[10px] sm:text-xs text-emerald-800 flex flex-col gap-2 tracking-widest">
             {INITIALIZATION_STEPS.map((s, i) => (
               <motion.div 
                 key={s.label}
@@ -107,9 +109,9 @@ export function IntroGate() {
                 animate={{ opacity: step > i ? 1 : 0 }}
                 className="flex items-center gap-2"
               >
-                <span className="text-emerald-600 dark:text-blue-500">&gt;</span>
+                <span className="text-emerald-600">&gt;</span>
                 <span>{s.label}:</span>
-                <span className="text-stone-900 dark:text-white">
+                <span className="text-stone-900">
                   {step > i + 1 && s.resolveTo ? s.resolveTo : s.value}
                   {step === i + 1 && !s.resolveTo && <span className="animate-pulse">_</span>}
                   {step === i + 1 && s.resolveTo && <span className="animate-pulse">...</span>}
@@ -119,7 +121,7 @@ export function IntroGate() {
           </div>
 
           {/* Bottom Right Copyright HUD */}
-          <div className="absolute bottom-12 right-12 terminal-text text-[10px] text-right text-emerald-800 dark:text-blue-400 tracking-widest opacity-60">
+          <div className="absolute bottom-12 right-12 terminal-text text-[10px] text-right text-emerald-800 tracking-widest opacity-60">
             <div>{profile.name}</div>
             <div>All Rights Reserved</div>
             <div>Copyright {new Date().getFullYear()}</div>
@@ -140,7 +142,7 @@ export function IntroGate() {
                   cx="200" cy="200" r={circleRadius} 
                   fill="none" 
                   stroke="currentColor" 
-                  className="text-emerald-600/10 dark:text-blue-500/10"
+                  className="text-emerald-600/10"
                   strokeWidth="2" 
                   strokeDasharray="4 8" 
                 />
@@ -149,7 +151,7 @@ export function IntroGate() {
                   cx="200" cy="200" r={circleRadius} 
                   fill="none" 
                   stroke="currentColor"
-                  className="text-emerald-600 dark:text-blue-500 transition-all duration-75"
+                  className="text-emerald-600 transition-all duration-75"
                   strokeWidth="2" 
                   strokeDasharray={`${circumference} ${circumference}`}
                   strokeDashoffset={strokeDashoffset}
@@ -157,7 +159,7 @@ export function IntroGate() {
                 />
               </svg>
               {/* Progress Text */}
-              <div className="absolute text-center terminal-text tracking-widest text-emerald-700 dark:text-blue-400">
+              <div className="absolute text-center terminal-text tracking-widest text-emerald-700">
                 <div className="text-3xl font-light mb-1">{progress}</div>
                 <div className="text-[10px] uppercase opacity-70">
                   {progress < 100 ? 'Loading' : 'Connection Established'}
@@ -173,7 +175,7 @@ export function IntroGate() {
               className={`flex flex-col items-center justify-center ${isReady ? 'pointer-events-auto' : 'pointer-events-none'}`}
             >
               <div className="font-[family-name:var(--font-space-grotesk)] text-center uppercase tracking-widest leading-[0.9] mb-12 select-none">
-                <div className="text-outline-light dark:text-outline text-4xl sm:text-6xl md:text-8xl opacity-80 flex justify-center">
+                <div className="text-outline-light text-4xl sm:text-6xl md:text-8xl opacity-80 flex justify-center">
                   {firstName.split('').map((char, i) => (
                     <motion.span
                       key={`f-${i}`}
@@ -190,7 +192,7 @@ export function IntroGate() {
                     </motion.span>
                   ))}
                 </div>
-                <div className="text-4xl sm:text-6xl md:text-8xl text-emerald-700 dark:text-blue-400 font-bold flex items-center justify-center mt-2">
+                <div className="text-4xl sm:text-6xl md:text-8xl text-emerald-700 font-bold flex items-center justify-center mt-2">
                   {lastName.split('').map((char, i) => (
                     <motion.span
                       key={`l-${i}`}
@@ -212,18 +214,18 @@ export function IntroGate() {
               {/* Corner Button CTA */}
               <button 
                 onClick={(e) => { e.stopPropagation(); handleEnter(); }}
-                className="group relative px-8 py-4 terminal-text tracking-widest text-sm text-stone-900 dark:text-white hover:text-emerald-700 dark:hover:text-blue-400 transition-colors overflow-hidden"
+                className="group relative px-8 py-4 terminal-text tracking-widest text-sm text-stone-900 hover:text-emerald-700 transition-colors overflow-hidden"
               >
                 <div className="relative z-10">Let's Begin <span className="opacity-50 text-[10px] block mt-1">(Or click anywhere)</span></div>
                 
                 {/* Background glow on hover */}
-                <div className="absolute inset-0 bg-emerald-600/10 dark:bg-blue-500/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]" />
+                <div className="absolute inset-0 bg-emerald-600/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]" />
                 
                 {/* Corner Accents */}
-                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-emerald-600 dark:border-blue-500 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-emerald-600 dark:border-blue-500 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
-                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-emerald-600 dark:border-blue-500 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-emerald-600 dark:border-blue-500 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-emerald-600 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-emerald-600 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-emerald-600 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
+                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-emerald-600 transition-all duration-300 group-hover:w-full group-hover:h-full group-hover:opacity-50" />
               </button>
             </motion.div>
 
