@@ -12,6 +12,8 @@ import {
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons'
 import { siteConfig } from '@/config/site.config'
 import emailjs from '@emailjs/browser'
+import { Canvas } from '@react-three/fiber'
+import { Sparkles } from '@react-three/drei'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -93,8 +95,19 @@ export function ContactCTA() {
      }`
 
   return (
-    <section id="contact" className="py-20 px-4 md:px-8 w-full min-h-screen flex flex-col items-center justify-center">
-      <div className="max-w-5xl w-full mx-auto flex flex-col items-center">
+    <section id="contact" className="py-20 px-4 md:px-8 w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      
+      {/* 3D Background */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none -z-10">
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+          <ambientLight intensity={1} />
+          <Sparkles count={150} scale={15} size={2} speed={0.4} opacity={0.6} color="#3b82f6" />
+          <Sparkles count={100} scale={12} size={4} speed={0.2} opacity={0.4} color="#10b981" />
+          <Sparkles count={50} scale={10} size={6} speed={0.3} opacity={0.3} color="#8b5cf6" />
+        </Canvas>
+      </div>
+
+      <div className="max-w-5xl w-full mx-auto flex flex-col items-center relative z-10">
         
         {/* Header Section */}
         <div className="text-center mb-10 flex flex-col items-center">
