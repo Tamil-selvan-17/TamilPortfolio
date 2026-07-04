@@ -443,7 +443,7 @@ export const CosmicZoomEngine = () => {
               let currentOffset = (time * 0.03) % mapWidth
               
               // Fast cinematic 360 spin when parked
-              if (loopState === 'parked' || loopState === 'explosion') {
+              if (loopState === 'parked') {
                  // It will rotate exactly 1 full mapWidth over 200 frames
                  const spinProgress = Math.min(1, stateTimer / 200)
                  
