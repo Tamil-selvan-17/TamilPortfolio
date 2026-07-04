@@ -712,13 +712,13 @@ export default function CleanHero() {
   const typingText = useTypewriter(['Building the Future.', 'Crafting Premium UX.', 'Engineering Scale.', 'Transforming Vision.'], 75, 40, 2500)
 
   return (
-    <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-stone-50 dark:bg-[#030712]">
+    <section className="relative w-full min-h-[100svh] pt-24 pb-12 flex flex-col items-center justify-center overflow-hidden bg-stone-50 dark:bg-[#030712]">
       
       {/* Local Realtime 3D Cosmic Zoom Simulation */}
       <CosmicZoomEngine />
 
       {/* Main Content Container */}
-      <div className="w-full max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center text-center mt-[-5vh] pointer-events-none">
+      <div className="w-full max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center text-center pointer-events-none">
         
         {/* Subtle Frosted Backing to guarantee perfect readability over the realtime physics */}
         <div className="absolute inset-0 bg-white/10 dark:bg-black/20 backdrop-blur-sm rounded-[100px] pointer-events-none -z-10 scale-150 mask-image-[radial-gradient(ellipse_at_center,black_0%,transparent_70%)]" style={{ WebkitMaskImage: 'radial-gradient(ellipse at center, black 0%, transparent 60%)' }} />
