@@ -154,7 +154,6 @@ export function IntroGate() {
                   strokeDasharray={`${circumference} ${circumference}`}
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
-                  className="transition-all duration-75"
                 />
               </svg>
               {/* Progress Text */}
