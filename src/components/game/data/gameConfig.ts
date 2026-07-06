@@ -163,9 +163,9 @@ export const NPCS: NPCConfig[] = [
     tileY: 9,
     wanderRadius: 2,
     dialog: [
-      'Welcome to Portfolio Quest! 🎮',
-      'Use WASD or Arrow Keys to move.',
-      'Walk into buildings to explore!',
+      "Yo! Welcome to Portfolio Quest! 🎮",
+      "Don't just stand there — use WASD or Arrow Keys!",
+      "Walk into those glowing buildings. Trust me, it's worth it. 🔥",
     ],
   },
   {
@@ -176,9 +176,9 @@ export const NPCS: NPCConfig[] = [
     tileY: 9,
     wanderRadius: 2,
     dialog: [
-      'I heard his Angular projects are amazing! 🚀',
-      'Over 300 freelancers managed with VMS!',
-      'Try the Projects building! →',
+      "Did you see his Angular code? It's dangerously clean. 🚀",
+      "He built VMS and managed 300+ freelancers with it!",
+      "Go check the Projects building before it blows up! 💥",
     ],
   },
   {
@@ -189,9 +189,9 @@ export const NPCS: NPCConfig[] = [
     tileY: 19,
     wanderRadius: 2,
     dialog: [
-      'ASP.NET Core + Angular — a powerful combo!',
-      'He has 99.9% production uptime. Impressive!',
-      'Check out his Skills — they\'re top tier! ⚡',
+      ".NET Core backend + Angular frontend... a legendary combo.",
+      "They say his servers haven't gone down since the Mesozoic era. 🦖",
+      "His Skills page is basically a cheat code. Go look! ⚡",
     ],
   },
   {
@@ -202,9 +202,9 @@ export const NPCS: NPCConfig[] = [
     tileY: 9,
     wanderRadius: 3,
     dialog: [
-      'Have you seen his resume? 📄',
-      'Full-stack: Angular + .NET + Docker + Redis!',
-      'Contact him — he\'s open for opportunities! ✉️',
+      "I'm literally throwing offers at the screen right now. 💸",
+      "Docker, Redis, Cloud... he's got the full Infinity Gauntlet!",
+      "Slide into his DMs — hit the Contact building! ✉️",
     ],
   },
   {
@@ -215,9 +215,9 @@ export const NPCS: NPCConfig[] = [
     tileY: 20,
     wanderRadius: 3,
     dialog: [
-      'Psst... there\'s a secret cave to the northeast! 🗝️',
-      'Collect all the stars and keys to unlock it!',
-      'Hidden easter eggs await... 🥚',
+      "Listen closely... there's a Secret Cave hidden in the northeast. 🗝️",
+      "Only the worthy (who collect stars and keys) can enter.",
+      "Go claim your easter egg, champion! 🥚",
     ],
   },
 ]
