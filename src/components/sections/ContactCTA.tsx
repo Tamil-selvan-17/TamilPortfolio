@@ -11,7 +11,6 @@ import {
 } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons'
 import { siteConfig } from '@/config/site.config'
-import emailjs from '@emailjs/browser'
 import { Canvas } from '@react-three/fiber'
 import { Sparkles } from '@react-three/drei'
 
@@ -71,12 +70,19 @@ export function ContactCTA() {
     if (data._hp) return
     setStatus('sending')
     try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? '',
-        { from_name: data.name, from_email: data.email, subject: data.subject, message: data.message },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ''
-      )
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message
+        }),
+      })
+
+      if (!res.ok) throw new Error('Failed to send')
+      
       setStatus('success')
       reset()
     } catch {

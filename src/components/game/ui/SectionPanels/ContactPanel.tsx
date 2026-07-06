@@ -10,9 +10,25 @@ export function ContactPanel() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('sending')
-    // Simulate send (replace with actual EmailJS call)
-    await new Promise(r => setTimeout(r, 1200))
-    setStatus('sent')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: 'New Message from Portfolio Game',
+          message: form.message
+        }),
+      })
+
+      if (!res.ok) throw new Error('Failed to send')
+      
+      setStatus('sent')
+      setForm({ name: '', email: '', message: '' })
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
