@@ -273,6 +273,22 @@ export default function PortfolioQuestGame() {
       // Achievement check
       achieveRef.current?.check(save, (id) => saveRef.current.unlockAchievement(id))
 
+      // NPC interaction (mobile & desktop)
+      if (input.interact && !ui.npcMessage) {
+        for (const npc of npcsRef.current) {
+          const near = npc.isNearPlayer(player.x, player.y, player.w, player.h)
+          if (!near) continue
+          const cooldown = npcCooldownRef.current[npc.config.id] ?? 0
+          if (Date.now() - cooldown < 1500) continue
+          npcCooldownRef.current[npc.config.id] = Date.now()
+          saveRef.current.markNpcTalked(npc.config.id)
+          setNpcMessage({ text: npc.getCurrentDialog(), name: npc.config.name })
+          npc.nextDialog()
+          setHudSave({ ...saveRef.current.getSave() })
+          break
+        }
+      }
+
       // ── RENDER ──────────────────────────────────
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       camera.apply(ctx)
@@ -405,29 +421,7 @@ export default function PortfolioQuestGame() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase])
 
-  // NPC interaction via keyboard
-  useEffect(() => {
-    if (phase !== 'playing') return
-    const handler = (e: KeyboardEvent) => {
-      if (e.code !== 'KeyE' && e.code !== 'Space') return
-      const player = playerRef.current
-      if (!player) return
-      for (const npc of npcsRef.current) {
-        const near = npc.isNearPlayer(player.x, player.y, player.w, player.h)
-        if (!near) continue
-        const cooldown = npcCooldownRef.current[npc.config.id] ?? 0
-        if (Date.now() - cooldown < 1500) continue
-        npcCooldownRef.current[npc.config.id] = Date.now()
-        saveRef.current.markNpcTalked(npc.config.id)
-        setNpcMessage({ text: npc.getCurrentDialog(), name: npc.config.name })
-        npc.nextDialog()
-        setHudSave({ ...saveRef.current.getSave() })
-        break
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [phase])
+  // Keyboard event removed, now handled in game loop
 
   const enterBuilding = useCallback((id: SectionKey) => {
     setOpenSection(prev => {
