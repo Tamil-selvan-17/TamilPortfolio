@@ -1,6 +1,9 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useLiveTenure } from '@/hooks/useLiveTenure'
+import profile from '@/content/profile.json'
+import expData from '@/content/experience.json'
+import projectData from '@/content/projects.json'
 
 export function ResumePanel() {
   const tenure = useLiveTenure('2022-06-01')
@@ -14,11 +17,11 @@ export function ResumePanel() {
       >
         <div>
           <h3 className="text-xl font-black text-white">📄 Resume</h3>
-          <p className="text-slate-400 text-xs">Tamilselvan G — Full Stack Engineer · v1.0 · Jul 2026</p>
+          <p className="text-slate-400 text-xs">{profile.name} — {profile.title} · {profile.resumeVersion} · {new Date(profile.resumeUpdatedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</p>
         </div>
         <div className="ml-auto flex gap-2">
           <a
-            href="/Tamilselvan_G_Resume.pdf"
+            href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-colors border border-slate-600"
@@ -26,7 +29,7 @@ export function ResumePanel() {
             👁️ View
           </a>
           <a
-            href="/Tamilselvan_G_Resume.pdf"
+            href={profile.resumeUrl}
             download
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90 text-white text-sm font-bold transition-all shadow-lg shadow-emerald-900/40"
           >
@@ -43,9 +46,9 @@ export function ResumePanel() {
         transition={{ delay: 0.15 }}
       >
         <iframe
-          src="/Tamilselvan_G_Resume.pdf"
+          src={profile.resumeUrl}
           className="w-full h-full"
-          title="Tamilselvan G Resume"
+          title={`${profile.name} Resume`}
           style={{ minHeight: '400px' }}
         />
       </motion.div>
@@ -59,9 +62,9 @@ export function ResumePanel() {
       >
         {[
           { icon: '📅', label: `${tenure.years}+ Years`, sub: 'Experience' },
-          { icon: '🏢', label: 'Nova Techset', sub: 'Current Employer' },
-          { icon: '🛠️', label: '5+ Apps', sub: 'Delivered' },
-          { icon: '📍', label: 'Chennai', sub: 'Location' },
+          { icon: '🏢', label: expData[0]?.company || 'Current Employer', sub: 'Current Employer' },
+          { icon: '🛠️', label: `${projectData.length}+ Apps`, sub: 'Delivered' },
+          { icon: '📍', label: profile.location.split(',')[1]?.trim() || profile.location, sub: 'Location' },
         ].map(item => (
           <div key={item.label} className="bg-slate-800/50 border border-slate-700 rounded-xl p-3 text-center">
             <p className="text-xl mb-1">{item.icon}</p>

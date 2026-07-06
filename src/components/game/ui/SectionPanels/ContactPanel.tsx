@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import profile from '@/content/profile.json'
 
 export function ContactPanel() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -31,10 +32,10 @@ export function ContactPanel() {
         </div>
         <div className="space-y-3">
           {[
-            { icon: '✉️', label: 'Email', val: 'tamilselvang00022@gmail.com', href: 'mailto:tamilselvang00022@gmail.com' },
-            { icon: '📍', label: 'Location', val: 'Chennai, India', href: null },
-            { icon: '🔗', label: 'LinkedIn', val: 'LinkedIn Profile', href: 'http://www.linkedin.com/in/tamil-selvan-7200206323-full-stack-developer/' },
-            { icon: '🐙', label: 'GitHub', val: 'GitHub Profile', href: 'https://github.com/Tamil-selvan-17/Tamil-selvan-17' },
+            { icon: '✉️', label: 'Email', val: profile.email, href: `mailto:${profile.email}` },
+            { icon: '📍', label: 'Location', val: profile.location, href: null },
+            { icon: '🔗', label: 'LinkedIn', val: 'LinkedIn Profile', href: profile.links.linkedin },
+            { icon: '🐙', label: 'GitHub', val: 'GitHub Profile', href: profile.links.github },
           ].map(item => (
             <div key={item.label} className="flex items-start gap-2.5">
               <span className="text-lg mt-0.5">{item.icon}</span>
@@ -42,7 +43,7 @@ export function ContactPanel() {
                 <p className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">{item.label}</p>
                 {item.href
                   ? <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">{item.val}</a>
-                  : <p className="text-xs text-slate-300">{item.val}</p>
+                  : <p className="text-xs text-slate-300 capitalize">{item.val}</p>
                 }
               </div>
             </div>
@@ -50,7 +51,7 @@ export function ContactPanel() {
         </div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-green-500/10 border border-green-500/30">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-green-400 text-xs font-medium">Available for opportunities</span>
+          <span className="text-green-400 text-xs font-medium">{profile.availability.label}</span>
         </div>
       </motion.div>
 

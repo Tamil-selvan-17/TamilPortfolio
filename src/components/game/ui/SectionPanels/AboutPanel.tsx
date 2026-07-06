@@ -17,7 +17,7 @@ export function AboutPanel() {
         transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
       >
         <div className="w-32 h-32 md:w-44 md:h-44 rounded-3xl overflow-hidden border-4 border-emerald-500/50 shadow-2xl shadow-emerald-500/30 bg-slate-800">
-          <img src="/images/logo1.jpg" alt={profile.name} className="w-full h-full object-cover"
+          <img src={profile.photoUrl} alt={profile.name} className="w-full h-full object-cover"
                onError={e => { (e.currentTarget as HTMLImageElement).src = '' }} />
         </div>
         {/* Status badge */}
