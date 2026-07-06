@@ -85,7 +85,7 @@ export default function PortfolioQuestGame() {
       }
     })
     setHudSave({ ...save })
-    setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    setIsMobile(window.innerWidth < 768 || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches))
   }, [])
 
   // Achievement handler

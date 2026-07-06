@@ -30,7 +30,7 @@ export function GameHUD({ save, dayProgress, onSettings, nearBuilding }: Props) 
 
         {/* Day/night + settings */}
         <div className="flex gap-2 pointer-events-auto">
-          <div className="px-3 py-1.5 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 text-xs text-white font-medium flex items-center justify-center">
+          <div className="hidden sm:flex px-3 py-1.5 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 text-xs text-white font-medium items-center justify-center">
             {getPhase(dayProgress)}
           </div>
           <button
@@ -45,7 +45,7 @@ export function GameHUD({ save, dayProgress, onSettings, nearBuilding }: Props) 
             className="px-3 py-1.5 rounded-xl bg-red-500/20 backdrop-blur-sm border border-red-500/30 text-xs hover:bg-red-500/40 transition-colors text-red-500 font-bold"
             aria-label="Exit Game"
           >
-            Exit Game 🚪
+            <span className="hidden sm:inline">Exit Game </span>🚪
           </button>
         </div>
       </div>
@@ -106,7 +106,7 @@ function Minimap({ save }: { save: GameSave }) {
   const H = MAP_ROWS * SCALE
 
   return (
-    <div className="absolute bottom-8 right-3 z-[120] rounded-xl overflow-hidden border border-white/20 shadow-xl bg-black/70"
+    <div className="absolute bottom-8 right-3 z-[120] rounded-xl overflow-hidden border border-white/20 shadow-xl bg-black/70 hidden md:block"
          style={{ width: W, height: H }}>
       {/* Grid bg */}
       <div className="absolute inset-0 opacity-40" style={{
