@@ -492,11 +492,33 @@ export default function PortfolioQuestGame() {
         />
       )}
 
-      {/* Touch joystick */}
+      {/* Touch controls */}
       {phase === 'playing' && isMobile && (
-        <TouchJoystick
-          onMove={(dx, dy) => inputRef.current.setTouch(dx, dy)}
-        />
+        <>
+          <TouchJoystick
+            onMove={(dx, dy) => inputRef.current.setTouch(dx, dy)}
+          />
+          <div className="absolute bottom-8 right-8 flex flex-col gap-4 z-40 select-none">
+            <button
+              className="w-16 h-16 rounded-full bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center shadow-lg active:bg-white/30 active:scale-95 transition-all text-white font-bold text-lg"
+              onTouchStart={(e) => { e.preventDefault(); inputRef.current.setSprint(true) }}
+              onTouchEnd={(e) => { e.preventDefault(); inputRef.current.setSprint(false) }}
+              onMouseDown={(e) => { e.preventDefault(); inputRef.current.setSprint(true) }}
+              onMouseUp={(e) => { e.preventDefault(); inputRef.current.setSprint(false) }}
+            >
+              🏃
+            </button>
+            <button
+              className="w-16 h-16 rounded-full bg-emerald-500/80 backdrop-blur border border-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/30 active:bg-emerald-400 active:scale-95 transition-all text-white font-bold text-2xl"
+              onTouchStart={(e) => { e.preventDefault(); inputRef.current.setInteract(true) }}
+              onTouchEnd={(e) => { e.preventDefault(); inputRef.current.setInteract(false) }}
+              onMouseDown={(e) => { e.preventDefault(); inputRef.current.setInteract(true) }}
+              onMouseUp={(e) => { e.preventDefault(); inputRef.current.setInteract(false) }}
+            >
+              E
+            </button>
+          </div>
+        </>
       )}
 
       {/* NPC dialog */}

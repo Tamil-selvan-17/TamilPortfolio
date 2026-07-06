@@ -157,7 +157,7 @@ export function GalaxyFooter() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  if (pathname === '/game') return null
+  if (pathname?.startsWith('/game')) return null
 
   return (
     <footer className="relative w-full overflow-hidden bg-[#020617] text-white">

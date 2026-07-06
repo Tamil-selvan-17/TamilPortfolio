@@ -40,7 +40,7 @@ export function Navbar() {
     return pathname === href
   }
 
-  if (pathname === '/game') return null
+  if (pathname?.startsWith('/game')) return null
 
   return (
     <>

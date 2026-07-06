@@ -45,13 +45,25 @@ export class InputManager {
     this.touchDY = dy
   }
 
+  public touchInteract = false
+  public touchSprint = false
+
+  setInteract(val: boolean) {
+    this.touchInteract = val
+  }
+
+  setSprint(val: boolean) {
+    this.touchSprint = val
+  }
+
   getState(): InputState {
     const left    = this.keys.has('ArrowLeft')  || this.keys.has('KeyA') || this.touchDX < -0.2
     const right   = this.keys.has('ArrowRight') || this.keys.has('KeyD') || this.touchDX >  0.2
     const up      = this.keys.has('ArrowUp')    || this.keys.has('KeyW') || this.touchDY < -0.2
     const down    = this.keys.has('ArrowDown')  || this.keys.has('KeyS') || this.touchDY >  0.2
-    const sprint  = this.keys.has('ShiftLeft')  || this.keys.has('ShiftRight') || Math.abs(this.touchDX) > 0.7 || Math.abs(this.touchDY) > 0.7
-    const interact = this.keys.has('Space') || this.keys.has('KeyE')
+    const sprint  = this.keys.has('ShiftLeft')  || this.keys.has('ShiftRight') || Math.abs(this.touchDX) > 0.7 || Math.abs(this.touchDY) > 0.7 || this.touchSprint
+    const interact = this.keys.has('Space') || this.keys.has('KeyE') || this.touchInteract
     return { left, right, up, down, sprint, interact }
   }
 }
+

@@ -17,7 +17,7 @@ export function ScrollProgressBar() {
     }
   }, [progress])
 
-  if (pathname === '/game') return null
+  if (pathname?.startsWith('/game')) return null
 
   return (
     <div
