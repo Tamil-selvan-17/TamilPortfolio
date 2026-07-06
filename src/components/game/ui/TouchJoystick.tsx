@@ -60,7 +60,7 @@ export function TouchJoystick({ onMove }: Props) {
     <div
       ref={baseRef}
       onTouchStart={handleStart}
-      className="absolute bottom-8 left-8 w-24 h-24 rounded-full
+      className="absolute bottom-12 left-6 w-24 h-24 md:bottom-8 md:left-8 rounded-full
                  bg-white/10 border-2 border-white/30 backdrop-blur-sm
                  flex items-center justify-center touch-none select-none"
       style={{ zIndex: 150 }}

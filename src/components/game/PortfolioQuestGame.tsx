@@ -462,7 +462,7 @@ export default function PortfolioQuestGame() {
   return (
     <div
       className="relative bg-black overflow-hidden"
-      style={{ width: '100vw', height: '100vh', position: 'fixed', inset: 0 }}
+      style={{ width: '100vw', height: '100dvh', position: 'fixed', inset: 0 }}
     >
       {/* Canvas — always mounted so canvasRef is populated before startGame fires */}
       <canvas

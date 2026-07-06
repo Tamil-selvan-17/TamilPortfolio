@@ -71,7 +71,8 @@ export function GameHUD({ save, dayProgress, onSettings, nearBuilding }: Props) 
         <div className="absolute bottom-36 right-4 z-[120] px-4 py-2 rounded-xl
                         bg-black/60 border border-white/20 backdrop-blur-sm text-white text-sm font-medium
                         animate-pulse pointer-events-none">
-          Press <kbd className="px-1.5 py-0.5 rounded bg-white/20 text-xs font-bold">E</kbd> or walk into building
+          <span className="hidden md:inline">Press <kbd className="px-1.5 py-0.5 rounded bg-white/20 text-xs font-bold">E</kbd> or </span>
+          Walk into building to enter
         </div>
       )}
 
