@@ -18,8 +18,8 @@ export function TouchJoystick({ onMove }: Props) {
   }, [])
 
   const handleMove = useCallback((e: TouchEvent) => {
-    e.preventDefault()
     if (touchId.current === null || !baseRef.current) return
+    e.preventDefault()
     let t: Touch | null = null
     for (let i = 0; i < e.changedTouches.length; i++) {
       if (e.changedTouches[i].identifier === touchId.current) {
