@@ -6,27 +6,47 @@ import profile from '@/content/profile.json'
 export function ContactPanel() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    let newErrors = { name: '', email: '', message: '' }
+    let valid = true
+    if (!form.name.trim()) { newErrors.name = 'Name is required'; valid = false }
+    if (!form.email.includes('@')) { newErrors.email = 'Valid email is required'; valid = false }
+    if (!form.message.trim()) { newErrors.message = 'Message is required'; valid = false }
+    
+    setErrors(newErrors)
+    if (!valid) return
+
     setStatus('sending')
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          from_name: "TamilselvanG",
           name: form.name,
           email: form.email,
-          subject: 'New Message from Portfolio Game',
+          subject: "New Message from Portfolio Game",
           message: form.message
-        }),
+        })
       })
 
-      if (!res.ok) throw new Error('Failed to send')
+      const result = await response.json()
+      console.log("Web3Forms Response:", result)
+      
+      if (!result.success) throw new Error(result.message || 'Failed to send')
       
       setStatus('sent')
       setForm({ name: '', email: '', message: '' })
-    } catch {
+    } catch (err) {
+      console.error(err)
       setStatus('error')
     }
   }
@@ -92,29 +112,32 @@ export function ContactPanel() {
             <div>
               <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Name</label>
               <input
-                required value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                value={form.name}
+                onChange={e => { setForm(f => ({ ...f, name: e.target.value })); setErrors(err => ({ ...err, name: '' })) }}
                 placeholder="Your name"
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                className={`w-full bg-slate-800 border ${errors.name ? 'border-red-500' : 'border-slate-700'} rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors`}
               />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
             <div>
               <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Email</label>
               <input
-                required type="email" value={form.email}
-                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                type="email" value={form.email}
+                onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(err => ({ ...err, email: '' })) }}
                 placeholder="your@email.com"
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                className={`w-full bg-slate-800 border ${errors.email ? 'border-red-500' : 'border-slate-700'} rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors`}
               />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
             <div>
               <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Message</label>
               <textarea
-                required rows={5} value={form.message}
-                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                rows={5} value={form.message}
+                onChange={e => { setForm(f => ({ ...f, message: e.target.value })); setErrors(err => ({ ...err, message: '' })) }}
                 placeholder="Your message..."
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+                className={`w-full bg-slate-800 border ${errors.message ? 'border-red-500' : 'border-slate-700'} rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none`}
               />
+              {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
             </div>
             <motion.button
               type="submit"

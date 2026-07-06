@@ -33,6 +33,9 @@ export function ContactCTA() {
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(new Date(2026, 6, 1)) // Defaults to July 2026
   const [selectedDateObj, setSelectedDateObj] = useState<Date>(new Date(2026, 6, 3))
   const [selectedTime, setSelectedTime] = useState<string>('10:00 AM')
+  const [bookCallEmail, setBookCallEmail] = useState<string>('')
+  const [bookCallErrorText, setBookCallErrorText] = useState<string>('')
+  const [bookCallStatus, setBookCallStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
   const daysInMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 0).getDate()
   const firstDayOfMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), 1).getDay()
@@ -70,23 +73,66 @@ export function ContactCTA() {
     if (data._hp) return
     setStatus('sending')
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          from_name: "TamilselvanG",
           name: data.name,
           email: data.email,
           subject: data.subject,
           message: data.message
-        }),
+        })
       })
 
-      if (!res.ok) throw new Error('Failed to send')
+      const result = await response.json()
+      console.log("Web3Forms Response:", result)
+      
+      if (!result.success) throw new Error(result.message || 'Failed to send')
       
       setStatus('success')
       reset()
-    } catch {
+    } catch (err) {
+      console.error(err)
       setStatus('error')
+    }
+  }
+
+  const handleBookCall = async () => {
+    if (!bookCallEmail || !bookCallEmail.includes('@')) {
+      setBookCallErrorText("Please enter a valid email address.")
+      return
+    }
+    setBookCallErrorText('')
+    setBookCallStatus('sending')
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+          from_name: "TamilselvanG",
+          name: "Book Call Request",
+          email: bookCallEmail,
+          subject: "New Meeting Booked",
+          message: `Meeting requested for ${formatSelectedDate()} at ${selectedTime}.\nEmail: ${bookCallEmail}`
+        })
+      })
+
+      const result = await response.json()
+      if (!result.success) throw new Error(result.message || 'Failed to send')
+      
+      setBookCallStatus('success')
+    } catch (err) {
+      console.error(err)
+      setBookCallStatus('error')
     }
   }
 
@@ -251,20 +297,24 @@ export function ContactCTA() {
                       <input type="text" {...register('_hp')} className="hidden" aria-hidden="true" tabIndex={-1} />
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <input {...register('name', { required: true, minLength: 2 })} placeholder="Your Name" className={inputClass(!!errors.name)} />
+                        <div className="flex flex-col">
+                          <input {...register('name', { required: 'Name is required', minLength: { value: 2, message: 'Name must be at least 2 characters' } })} placeholder="Your Name" className={inputClass(!!errors.name)} />
+                          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                         </div>
-                        <div>
-                          <input {...register('email', { required: true, pattern: /^\S+@\S+\.\S+$/ })} placeholder="Your Email" type="email" className={inputClass(!!errors.email)} />
+                        <div className="flex flex-col">
+                          <input {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+\.\S+$/, message: 'Valid email is required' } })} placeholder="Your Email" type="email" className={inputClass(!!errors.email)} />
+                          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                         </div>
                       </div>
                       
-                      <div>
-                        <input {...register('subject', { required: true, minLength: 4 })} placeholder="Subject" className={inputClass(!!errors.subject)} />
+                      <div className="flex flex-col">
+                        <input {...register('subject', { required: 'Subject is required', minLength: { value: 4, message: 'Subject must be at least 4 characters' } })} placeholder="Subject" className={inputClass(!!errors.subject)} />
+                        {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
                       </div>
                       
-                      <div>
-                        <textarea {...register('message', { required: true, minLength: 20 })} placeholder="Message" rows={5} className={`${inputClass(!!errors.message)} resize-none`} />
+                      <div className="flex flex-col">
+                        <textarea {...register('message', { required: 'Message is required', minLength: { value: 20, message: 'Message must be at least 20 characters' } })} placeholder="Message" rows={5} className={`${inputClass(!!errors.message)} resize-none`} />
+                        {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
                       </div>
 
                       {status === 'error' && <p className="text-sm text-red-500">Something went wrong. Please try emailing me directly.</p>}
@@ -328,74 +378,99 @@ export function ContactCTA() {
                   </div>
                 </div>
 
-                {/* Right: Calendar Grid & Timeslots */}
-                <div className="w-full lg:w-2/3 flex flex-col md:flex-row gap-8">
+                {/* Right: Email, Calendar Grid & Timeslots */}
+                <div className="w-full lg:w-2/3 flex flex-col gap-8">
                   
-                  {/* Calendar Matrix */}
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-6">
-                      <button onClick={handlePrevMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronLeft size={20} /></button>
-                      <h4 className="font-semibold text-stone-900 dark:text-white">{formatCurrentMonth()}</h4>
-                      <button onClick={handleNextMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronRight size={20} /></button>
-                    </div>
-
-                    <div className="grid grid-cols-7 gap-y-4 gap-x-2 text-center text-sm">
-                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
-                        <div key={day} className="text-stone-400 font-medium text-xs">{day}</div>
-                      ))}
-                      
-                      {/* Empty slots for start of month */}
-                      {[...Array(firstDayOfMonth)].map((_, i) => <div key={`empty-${i}`} />)}
-                      
-                      {/* Dates */}
-                      {[...Array(daysInMonth)].map((_, i) => {
-                        const date = i + 1
-                        const isSelected = date === selectedDateObj.getDate() && 
-                                           currentMonthDate.getMonth() === selectedDateObj.getMonth() && 
-                                           currentMonthDate.getFullYear() === selectedDateObj.getFullYear()
-                        return (
-                          <div key={date} className="flex justify-center">
-                            <button 
-                              onClick={() => setSelectedDateObj(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), date))}
-                              className={`w-8 h-8 rounded-full flex items-center justify-center font-medium transition-colors
-                                ${isSelected 
-                                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' 
-                                  : 'text-stone-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600'
-                                }`}
-                            >
-                              {date}
-                            </button>
-                          </div>
-                        )
-                      })}
+                  {/* Email Input at the top (get email 1st) */}
+                  <div className="w-full bg-stone-50 dark:bg-slate-800/40 p-5 rounded-xl border border-stone-200 dark:border-slate-700">
+                    <label className="block text-sm font-semibold text-stone-700 dark:text-slate-300 mb-3">1. Enter your email to book</label>
+                    <div className="flex flex-col sm:flex-row gap-3 items-start">
+                      <div className="flex-1 w-full flex flex-col">
+                        <input 
+                          type="email" 
+                          value={bookCallEmail}
+                          onChange={(e) => {
+                            setBookCallEmail(e.target.value)
+                            setBookCallErrorText('')
+                          }}
+                          placeholder="your@email.com"
+                          className={`w-full px-4 py-3 rounded-lg border ${bookCallErrorText ? 'border-red-500' : 'border-stone-300 dark:border-slate-600'} bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-stone-800 dark:text-slate-200`}
+                          disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
+                        />
+                        {bookCallErrorText && <p className="text-red-500 text-xs mt-1 px-1">{bookCallErrorText}</p>}
+                      </div>
+                      <button 
+                        onClick={handleBookCall}
+                        disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
+                        className="w-full sm:w-auto shrink-0 px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        {bookCallStatus === 'sending' && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {bookCallStatus === 'success' ? 'Booked!' : 'Confirm Booking'}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Time Slots */}
-                  <div className="w-full md:w-48 flex flex-col gap-3">
-                    <div className="text-sm font-medium text-stone-600 dark:text-slate-400 mb-2 md:mb-5">Pick a time</div>
-                    <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
-                      {['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM'].map(time => (
-                        <button 
-                          key={time}
-                          onClick={() => setSelectedTime(time)}
-                          className={`w-full py-2 border rounded-md text-sm font-medium transition-colors
-                            ${selectedTime === time
-                              ? 'border-blue-600 bg-blue-600 text-white'
-                              : 'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                            }`}
-                        >
-                          {time}
-                        </button>
-                      ))}
+                  <div className="flex flex-col md:flex-row gap-8">
+                    {/* Calendar Matrix */}
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold text-stone-700 dark:text-slate-300 mb-4 block md:hidden">2. Pick a date</div>
+                      <div className="flex items-center justify-between mb-6">
+                        <button onClick={handlePrevMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronLeft size={20} /></button>
+                        <h4 className="font-semibold text-stone-900 dark:text-white">{formatCurrentMonth()}</h4>
+                        <button onClick={handleNextMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronRight size={20} /></button>
+                      </div>
+
+                      <div className="grid grid-cols-7 gap-y-4 gap-x-2 text-center text-sm">
+                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+                          <div key={day} className="text-stone-400 font-medium text-xs">{day}</div>
+                        ))}
+                        
+                        {/* Empty slots for start of month */}
+                        {[...Array(firstDayOfMonth)].map((_, i) => <div key={`empty-${i}`} />)}
+                        
+                        {/* Dates */}
+                        {[...Array(daysInMonth)].map((_, i) => {
+                          const date = i + 1
+                          const isSelected = date === selectedDateObj.getDate() && 
+                                             currentMonthDate.getMonth() === selectedDateObj.getMonth() && 
+                                             currentMonthDate.getFullYear() === selectedDateObj.getFullYear()
+                          return (
+                            <div key={date} className="flex justify-center">
+                              <button 
+                                onClick={() => setSelectedDateObj(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), date))}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center font-medium transition-colors
+                                  ${isSelected 
+                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' 
+                                    : 'text-stone-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600'
+                                  }`}
+                              >
+                                {date}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
-                    
-                    <button 
-                      onClick={() => alert(`Meeting booked successfully for ${formatSelectedDate()} at ${selectedTime}! (Mockup)`)}
-                      className="mt-4 w-full py-3 rounded-lg border border-blue-500 text-blue-600 dark:text-blue-400 text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-                    >
-                      Book Call
-                    </button>
+
+                    {/* Time Slots */}
+                    <div className="w-full md:w-48 flex flex-col gap-3">
+                      <div className="text-sm font-semibold text-stone-700 dark:text-slate-300 mb-2 md:mb-5">3. Pick a time</div>
+                      <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                        {['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM'].map(time => (
+                          <button 
+                            key={time}
+                            onClick={() => setSelectedTime(time)}
+                            className={`w-full py-2 border rounded-md text-sm font-medium transition-colors
+                              ${selectedTime === time
+                                ? 'border-blue-600 bg-blue-600 text-white'
+                                : 'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                              }`}
+                          >
+                            {time}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
