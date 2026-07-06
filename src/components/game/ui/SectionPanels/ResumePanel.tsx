@@ -1,7 +1,9 @@
 'use client'
 import { motion } from 'framer-motion'
+import { useLiveTenure } from '@/hooks/useLiveTenure'
 
 export function ResumePanel() {
+  const tenure = useLiveTenure('2022-06-01')
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Top actions */}
@@ -56,7 +58,7 @@ export function ResumePanel() {
         transition={{ delay: 0.25 }}
       >
         {[
-          { icon: '📅', label: '2+ Years', sub: 'Experience' },
+          { icon: '📅', label: `${tenure.years}+ Years`, sub: 'Experience' },
           { icon: '🏢', label: 'Nova Techset', sub: 'Current Employer' },
           { icon: '🛠️', label: '5+ Apps', sub: 'Delivered' },
           { icon: '📍', label: 'Chennai', sub: 'Location' },

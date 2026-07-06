@@ -2,8 +2,11 @@
 import { motion } from 'framer-motion'
 
 import profile from '@/content/profile.json'
+import { useLiveTenure } from '@/hooks/useLiveTenure'
 
 export function AboutPanel() {
+  const tenure = useLiveTenure('2022-06-01')
+  const summaryText = profile.summary.replace('{{YEARS}}', tenure.years.toString())
   return (
     <div className="flex flex-col md:flex-row gap-8 h-full items-start">
       {/* Avatar */}
@@ -34,7 +37,7 @@ export function AboutPanel() {
               <span key={t} className="px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">{t}</span>
             ))}
           </div>
-          <p className="text-slate-300 text-sm leading-relaxed mb-5">{profile.summary}</p>
+          <p className="text-slate-300 text-sm leading-relaxed mb-5">{summaryText}</p>
           <div className="flex flex-wrap gap-3">
             <InfoChip icon="📍" label={profile.location} />
             <InfoChip icon="✉️" label={profile.email} href={`mailto:${profile.email}`} />
