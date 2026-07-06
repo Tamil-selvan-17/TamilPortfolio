@@ -5,7 +5,7 @@ import {
   Search, ArrowRight, Download, Monitor, Briefcase,
   FolderOpen, Wrench, Mail, Moon, Sun, X
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useCommandPalette } from '@/hooks/useCommandPalette'
 import { useTheme } from 'next-themes'
 import { getProjects } from '@/lib/content'
@@ -27,6 +27,7 @@ const STATIC_COMMANDS = [
 export function CommandPalette() {
   const { open, setOpen, query, setQuery } = useCommandPalette()
   const router = useRouter()
+  const pathname = usePathname()
   const { setTheme } = useTheme()
 
   const projectCommands = useMemo(
@@ -67,6 +68,8 @@ export function CommandPalette() {
       router.push(cmd.action)
     }
   }
+
+  if (pathname === '/game') return null
 
   return (
     <AnimatePresence>

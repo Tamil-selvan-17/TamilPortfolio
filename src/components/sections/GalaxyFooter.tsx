@@ -140,8 +140,11 @@ const Starfield = () => {
   )
 }
 
+import { usePathname } from 'next/navigation'
+
 export function GalaxyFooter() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -153,6 +156,8 @@ export function GalaxyFooter() {
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
+
+  if (pathname === '/game') return null
 
   return (
     <footer className="relative w-full overflow-hidden bg-[#020617] text-white">

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Download } from 'lucide-react'
+import { Menu, X, Download, Gamepad2 } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { usePathname } from 'next/navigation'
 import { siteConfig } from '@/config/site.config'
@@ -39,6 +39,8 @@ export function Navbar() {
   const isActive = (href: string) => {
     return pathname === href
   }
+
+  if (pathname === '/game') return null
 
   return (
     <>
@@ -87,6 +89,20 @@ export function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+
+            {/* Game icon */}
+            <Link
+              href="/game"
+              aria-label="Play Portfolio Quest"
+              title="Portfolio Quest — Play the Game!"
+              className="w-9 h-9 flex items-center justify-center rounded-xl
+                         bg-gradient-to-br from-violet-500/20 to-indigo-500/20
+                         border border-violet-500/30 hover:border-violet-400/60
+                         text-violet-400 hover:text-violet-300
+                         transition-all duration-200 hover:scale-105 group"
+            >
+              <Gamepad2 size={16} className="group-hover:rotate-6 transition-transform duration-200" />
+            </Link>
 
             <ThemeToggle />
 
@@ -140,7 +156,16 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
-              <div className="border-t border-white/8 mt-2 pt-2">
+              <div className="border-t border-white/8 mt-2 pt-2 flex flex-col gap-1">
+                <Link
+                  href="/game"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm
+                             bg-gradient-to-r from-violet-600/80 to-indigo-600/80 text-white font-medium"
+                >
+                  <Gamepad2 size={14} />
+                  Portfolio Quest 🎮
+                </Link>
                 <a
                   href="/resume/Tamilselvan_G_Resume.pdf"
                   download

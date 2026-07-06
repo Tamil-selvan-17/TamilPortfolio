@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useRef, useEffect, useCallback, useState } from "react"
+import { usePathname } from "next/navigation"
 
 interface Position {
   x: number
@@ -33,6 +34,7 @@ export function SVGFollower({
   autoPlay = false,
   className = "",
 }: SVGFollowerProps) {
+  const pathname = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const followersRef = useRef<Follower[]>([])
@@ -270,6 +272,8 @@ export function SVGFollower({
       }
     }
   }, [colors, animate])
+
+  if (pathname === '/game') return null
 
   return (
     <div

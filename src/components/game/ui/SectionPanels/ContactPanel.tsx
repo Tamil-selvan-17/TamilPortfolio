@@ -1,0 +1,116 @@
+'use client'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+
+export function ContactPanel() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [form, setForm] = useState({ name: '', email: '', message: '' })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('sending')
+    // Simulate send (replace with actual EmailJS call)
+    await new Promise(r => setTimeout(r, 1200))
+    setStatus('sent')
+  }
+
+  return (
+    <div className="flex flex-col md:flex-row gap-8 h-full">
+      {/* Left: info */}
+      <motion.div
+        className="md:w-52 shrink-0 space-y-5"
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <div>
+          <h3 className="text-xl font-black text-white mb-1">Let's Connect</h3>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Open to full-time opportunities, freelance projects, and interesting collaborations.
+          </p>
+        </div>
+        <div className="space-y-3">
+          {[
+            { icon: '✉️', label: 'Email', val: 'tamilselvang00022@gmail.com', href: 'mailto:tamilselvang00022@gmail.com' },
+            { icon: '📍', label: 'Location', val: 'Chennai, India', href: null },
+            { icon: '🔗', label: 'LinkedIn', val: 'LinkedIn Profile', href: 'http://www.linkedin.com/in/tamil-selvan-7200206323-full-stack-developer/' },
+            { icon: '🐙', label: 'GitHub', val: 'GitHub Profile', href: 'https://github.com/Tamil-selvan-17/Tamil-selvan-17' },
+          ].map(item => (
+            <div key={item.label} className="flex items-start gap-2.5">
+              <span className="text-lg mt-0.5">{item.icon}</span>
+              <div>
+                <p className="text-[10px] text-slate-500 uppercase tracking-wide font-semibold">{item.label}</p>
+                {item.href
+                  ? <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">{item.val}</a>
+                  : <p className="text-xs text-slate-300">{item.val}</p>
+                }
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-green-500/10 border border-green-500/30">
+          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <span className="text-green-400 text-xs font-medium">Available for opportunities</span>
+        </div>
+      </motion.div>
+
+      {/* Right: form */}
+      <motion.form
+        onSubmit={handleSubmit}
+        className="flex-1 space-y-3"
+        initial={{ x: 20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        {status === 'sent' ? (
+          <div className="h-full flex items-center justify-center flex-col gap-4">
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+              <span className="text-6xl">🎉</span>
+            </motion.div>
+            <p className="text-white font-bold text-xl">Message sent!</p>
+            <p className="text-slate-400 text-sm text-center">Thanks for reaching out. I'll get back to you soon!</p>
+          </div>
+        ) : (
+          <>
+            <div>
+              <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Name</label>
+              <input
+                required value={form.name}
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                placeholder="Your name"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Email</label>
+              <input
+                required type="email" value={form.email}
+                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                placeholder="your@email.com"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1 block">Message</label>
+              <textarea
+                required rows={5} value={form.message}
+                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                placeholder="Your message..."
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+              />
+            </div>
+            <motion.button
+              type="submit"
+              disabled={status === 'sending'}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold text-sm disabled:opacity-60 transition-all"
+            >
+              {status === 'sending' ? '📤 Sending...' : '✉️ Send Message'}
+            </motion.button>
+          </>
+        )}
+      </motion.form>
+    </div>
+  )
+}
