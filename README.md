@@ -22,6 +22,17 @@ Welcome to the source code of my interactive 3D portfolio! This project pushes t
 - **Modern Tech Stack:** Built with Next.js, React, TypeScript, and Tailwind CSS.
 - **Premium Micro-Interactions:** Custom typewriter effects, magnetic buttons, and buttery smooth scroll-linked reveals driven by Framer Motion.
 
+## 🕹️ Playable Interactive Games
+
+This portfolio goes beyond a simple website by integrating full 2D browser games directly into the web app using **Phaser 3** and **Zustand**!
+
+- **Bug Hunter 2.0:** A fast-paced, Space Invaders-style arcade game where you play as a Programmer defending Production against swarms of syntax and runtime errors! It features:
+  - Custom 2D pixel art graphics and animations.
+  - A responsive Mobile Joystick and touch controls.
+  - Power-up drops (Laser Upgrades & Health Recovery).
+  - Epic bullet-hell Boss fights with progressive difficulty scaling.
+- **Portfolio Quest:** A classic top-down RPG where recruiters and visitors can explore an interactive world to discover my projects and skills!
+
 ## 🚀 Getting Started
 
 Clone the repository and install the dependencies:
