@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
 import { useGameStore } from '@/components/bug-hunter/store/useGameStore'
+import { useRouter } from 'next/navigation'
 
 // Dynamically import the Phaser wrapper so it doesn't break SSR
 const PhaserGame = dynamic(() => import('@/components/bug-hunter/engine/PhaserGame'), { 
@@ -17,9 +18,14 @@ const PhaserGame = dynamic(() => import('@/components/bug-hunter/engine/PhaserGa
 export default function BugHunterPage() {
   const [isClient, setIsClient] = useState(false)
   const store = useGameStore()
+  const router = useRouter()
 
   useEffect(() => {
     setIsClient(true)
+    if (sessionStorage.getItem('bug-hunter-start') === 'true') {
+      useGameStore.getState().setMainMenu(false)
+      sessionStorage.removeItem('bug-hunter-start')
+    }
   }, [])
 
   if (!isClient) return null
@@ -30,69 +36,95 @@ export default function BugHunterPage() {
       <PhaserGame />
       
       {/* React HUD Overlay */}
-      <div className="absolute top-0 left-0 w-full p-4 pointer-events-none flex justify-between items-start z-50">
+      <div className="absolute top-0 left-0 w-full p-2 md:p-4 pointer-events-none flex justify-between items-start z-50">
         
-        {/* Top Left: Health & Energy */}
-        <div className="flex flex-col gap-2">
-          {/* Health Bar */}
-          <div className="w-48 h-6 bg-zinc-800 rounded-full border-2 border-zinc-700 overflow-hidden relative">
+        {/* Top Left: Navigation & Production Health */}
+        <div className="flex flex-col gap-2 md:gap-4">
+          {/* Pause/Menu Button */}
+          <button 
+            onClick={() => store.setMainMenu(true)}
+            className="pointer-events-auto w-fit bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 text-zinc-300 hover:text-white px-2 py-1 md:px-4 md:py-2 rounded-lg font-bold text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-all hover:bg-zinc-800"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" className="md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+            MENU
+          </button>
+
+          {/* Production Health */}
+          <div className="w-24 md:w-48 h-4 md:h-6 bg-zinc-900/80 rounded-full border-2 border-zinc-700 overflow-hidden relative">
             <div 
               className="h-full bg-rose-500 transition-all duration-200" 
               style={{ width: `${(store.health / store.maxHealth) * 100}%` }}
             />
-            <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-md">
-              HP: {store.health}/{store.maxHealth}
+            <span className="absolute inset-0 flex items-center justify-center text-[8px] md:text-[10px] font-bold text-white drop-shadow-md">
+              HP: {store.health}%
             </span>
           </div>
+        </div>
 
-          {/* Energy Bar */}
-          <div className="w-48 h-4 bg-zinc-800 rounded-full border-2 border-zinc-700 overflow-hidden relative">
-            <div 
-              className="h-full bg-cyan-500 transition-all duration-200" 
-              style={{ width: `${(store.energy / store.maxEnergy) * 100}%` }}
-            />
+        {/* Top Center: Level Indicator & Score */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-2 md:top-4 flex flex-col items-center gap-1 md:gap-2">
+          <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-3 py-1 md:px-6 md:py-2 rounded-full text-indigo-400 font-bold text-xs md:text-xl tracking-widest uppercase whitespace-nowrap">
+            LEVEL {store.level}/10
+          </div>
+          <div className="text-amber-400 font-bold text-xs md:text-lg drop-shadow-md">
+            SCORE: {store.score}
           </div>
         </div>
 
-        {/* Top Center: Wave Indicator */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-4">
-          <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-6 py-2 rounded-full text-indigo-400 font-bold text-xl tracking-widest uppercase">
-            Wave {store.wave}
-          </div>
-        </div>
-
-        {/* Top Right: Level, XP, Coins & Shop */}
+        {/* Top Right: Laser Level */}
         <div className="flex flex-col items-end gap-2">
-          <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-4 py-2 rounded-xl text-emerald-400 font-bold flex gap-4 items-center">
-            <span>LVL {store.level}</span>
-            <span className="text-zinc-500">|</span>
-            <span className="text-amber-400">🪙 {store.coins}</span>
-            <button 
-              onClick={store.toggleShop}
-              className="ml-2 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded shadow-lg pointer-events-auto transition-colors"
-            >
-              SHOP
-            </button>
-          </div>
-          
-          {/* XP Bar */}
-          <div className="w-32 h-2 bg-zinc-800 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-emerald-500 transition-all duration-200"
-              style={{ width: `${(store.xp / (store.level * 100)) * 100}%` }}
-            />
+          <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 p-1 px-2 md:p-2 md:px-4 rounded-xl text-emerald-400 font-bold flex flex-col gap-1 md:gap-2">
+            <div className="text-[8px] md:text-[10px] text-zinc-400 text-center uppercase tracking-wider mb-0 md:mb-1 border-b border-zinc-800 pb-1 hidden md:block">
+              Laser Power
+            </div>
+            <div className="text-xs md:text-xl text-center text-white">
+              LVL {store.laserLevel}
+            </div>
           </div>
         </div>
 
       </div>
+
+      {/* Main Menu Overlay */}
+      {store.isMainMenu && (
+        <div className="absolute inset-0 z-[200] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md pointer-events-auto">
+          <h1 className="text-7xl font-bold text-emerald-500 mb-12 tracking-widest uppercase">Bug Hunter</h1>
+          <div className="flex flex-col gap-6 w-80">
+            {store.score > 0 || store.level > 1 || store.health < 100 ? (
+              <button 
+                onClick={() => { store.setMainMenu(false); store.setPaused(false) }}
+                className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xl transition-transform hover:scale-105"
+              >
+                Resume Game
+              </button>
+            ) : null}
+            <button 
+              onClick={() => { 
+                store.resetStats(); 
+                sessionStorage.setItem('bug-hunter-start', 'true');
+                window.location.reload(); 
+              }}
+              className="px-8 py-4 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xl transition-transform hover:scale-105"
+            >
+              New Game
+            </button>
+            <button 
+              onClick={() => router.push('/')}
+              className="px-8 py-4 bg-zinc-700 hover:bg-zinc-600 text-white font-bold rounded-xl text-xl transition-transform hover:scale-105"
+            >
+              Exit to Portfolio
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Game Over Overlay */}
       {store.isGameOver && (
         <div className="absolute inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md pointer-events-auto">
           <div className="text-center p-8 bg-zinc-900/50 border border-zinc-800 rounded-3xl shadow-2xl">
             <h1 className="text-6xl font-bold text-rose-500 mb-4 tracking-widest uppercase animate-pulse">Game Over</h1>
-            <p className="text-zinc-400 text-xl mb-8">You survived until <span className="text-indigo-400 font-bold">Wave {store.wave}</span></p>
-            <p className="text-zinc-300 text-lg mb-8">Level Reached: <span className="text-emerald-400 font-bold">{store.level}</span></p>
+            <p className="text-zinc-400 text-xl mb-4">You reached <span className="text-indigo-400 font-bold">Level {store.level}</span></p>
+            <p className="text-zinc-300 text-2xl mb-8">Final Score: <span className="text-amber-400 font-bold">{store.score}</span></p>
             <button 
               onClick={() => {
                 store.resetStats()
@@ -102,118 +134,6 @@ export default function BugHunterPage() {
             >
               Play Again
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* Shop Overlay */}
-      {store.isShopOpen && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-auto">
-          <div className="w-full max-w-lg bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl p-6 text-white">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-indigo-400">Upgrade Shop</h2>
-              <button 
-                onClick={store.toggleShop}
-                className="text-zinc-400 hover:text-white text-2xl"
-              >
-                &times;
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              {/* Weapon: Console Cannon */}
-              <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950 flex justify-between items-center">
-                <div>
-                  <h3 className="font-bold text-orange-400">Console Cannon</h3>
-                  <p className="text-sm text-zinc-500">High damage, slower fire rate. (Cost: 100 🪙)</p>
-                </div>
-                
-                {store.weapons.includes('console_cannon') ? (
-                  <button 
-                    onClick={() => store.switchWeapon(store.weapons.indexOf('console_cannon'))}
-                    className={`px-4 py-2 rounded font-bold ${
-                      store.weapons[store.currentWeaponIndex] === 'console_cannon' 
-                        ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' 
-                        : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                    }`}
-                  >
-                    {store.weapons[store.currentWeaponIndex] === 'console_cannon' ? 'Equipped' : 'Equip'}
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => {
-                      if (store.coins >= 100) {
-                        store.addCoins(-100)
-                        store.unlockWeapon('console_cannon')
-                      }
-                    }}
-                    className={`px-4 py-2 rounded font-bold ${
-                      store.coins >= 100 
-                        ? 'bg-amber-500 hover:bg-amber-400 text-black' 
-                        : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
-                    }`}
-                  >
-                    Buy
-                  </button>
-                )}
-              </div>
-
-              {/* Weapon: Debug Laser (Default) */}
-              <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950 flex justify-between items-center">
-                <div>
-                  <h3 className="font-bold text-cyan-400">Debug Laser</h3>
-                  <p className="text-sm text-zinc-500">Fast, low damage.</p>
-                </div>
-                
-                <button 
-                  onClick={() => store.switchWeapon(store.weapons.indexOf('debug_laser'))}
-                  className={`px-4 py-2 rounded font-bold ${
-                    store.weapons[store.currentWeaponIndex] === 'debug_laser' 
-                      ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' 
-                      : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                  }`}
-                >
-                  {store.weapons[store.currentWeaponIndex] === 'debug_laser' ? 'Equipped' : 'Equip'}
-                </button>
-              </div>
-              {/* Weapon: TypeScript Missile */}
-              <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950 flex justify-between items-center">
-                <div>
-                  <h3 className="font-bold text-blue-500">TypeScript Missile</h3>
-                  <p className="text-sm text-zinc-500">Homing missiles. (Cost: 300 🪙)</p>
-                </div>
-                
-                {store.weapons.includes('ts_missile') ? (
-                  <button 
-                    onClick={() => store.switchWeapon(store.weapons.indexOf('ts_missile'))}
-                    className={`px-4 py-2 rounded font-bold ${
-                      store.weapons[store.currentWeaponIndex] === 'ts_missile' 
-                        ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed' 
-                        : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                    }`}
-                  >
-                    {store.weapons[store.currentWeaponIndex] === 'ts_missile' ? 'Equipped' : 'Equip'}
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => {
-                      if (store.coins >= 300) {
-                        store.addCoins(-300)
-                        store.unlockWeapon('ts_missile')
-                      }
-                    }}
-                    className={`px-4 py-2 rounded font-bold ${
-                      store.coins >= 300 
-                        ? 'bg-amber-500 hover:bg-amber-400 text-black' 
-                        : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
-                    }`}
-                  >
-                    Buy
-                  </button>
-                )}
-              </div>
-
-            </div>
           </div>
         </div>
       )}

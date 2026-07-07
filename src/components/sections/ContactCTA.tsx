@@ -378,51 +378,21 @@ export function ContactCTA() {
                   </div>
                 </div>
 
-                {/* Right: Email, Calendar Grid & Timeslots */}
-                <div className="w-full lg:w-2/3 flex flex-col gap-8">
+                {/* Right: Calendar Grid & Timeslots, then Email at bottom */}
+                <div className="w-full lg:w-2/3 flex flex-col gap-10">
                   
-                  {/* Email Input at the top (get email 1st) */}
-                  <div className="w-full bg-stone-50 dark:bg-slate-800/40 p-5 rounded-xl border border-stone-200 dark:border-slate-700">
-                    <label className="block text-sm font-semibold text-stone-700 dark:text-slate-300 mb-3">1. Enter your email to book</label>
-                    <div className="flex flex-col sm:flex-row gap-3 items-start">
-                      <div className="flex-1 w-full flex flex-col">
-                        <input 
-                          type="email" 
-                          value={bookCallEmail}
-                          onChange={(e) => {
-                            setBookCallEmail(e.target.value)
-                            setBookCallErrorText('')
-                          }}
-                          placeholder="your@email.com"
-                          className={`w-full px-4 py-3 rounded-lg border ${bookCallErrorText ? 'border-red-500' : 'border-stone-300 dark:border-slate-600'} bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-stone-800 dark:text-slate-200`}
-                          disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
-                        />
-                        {bookCallErrorText && <p className="text-red-500 text-xs mt-1 px-1">{bookCallErrorText}</p>}
-                      </div>
-                      <button 
-                        onClick={handleBookCall}
-                        disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
-                        className="w-full sm:w-auto shrink-0 px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        {bookCallStatus === 'sending' && <Loader2 className="w-4 h-4 animate-spin" />}
-                        {bookCallStatus === 'success' ? 'Booked!' : 'Confirm Booking'}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col md:flex-row gap-8">
+                  <div className="flex flex-col md:flex-row gap-10">
                     {/* Calendar Matrix */}
                     <div className="flex-1">
-                      <div className="text-sm font-semibold text-stone-700 dark:text-slate-300 mb-4 block md:hidden">2. Pick a date</div>
-                      <div className="flex items-center justify-between mb-6">
-                        <button onClick={handlePrevMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronLeft size={20} /></button>
-                        <h4 className="font-semibold text-stone-900 dark:text-white">{formatCurrentMonth()}</h4>
-                        <button onClick={handleNextMonth} className="p-1 hover:bg-stone-100 dark:hover:bg-slate-800 rounded text-stone-400 transition-colors"><ChevronRight size={20} /></button>
+                      <div className="flex items-center justify-between mb-8">
+                        <button onClick={handlePrevMonth} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 dark:hover:bg-slate-800 text-stone-500 dark:text-slate-400 transition-colors"><ChevronLeft size={18} /></button>
+                        <h4 className="font-bold text-stone-900 dark:text-white">{formatCurrentMonth()}</h4>
+                        <button onClick={handleNextMonth} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 dark:hover:bg-slate-800 text-stone-500 dark:text-slate-400 transition-colors"><ChevronRight size={18} /></button>
                       </div>
 
-                      <div className="grid grid-cols-7 gap-y-4 gap-x-2 text-center text-sm">
+                      <div className="grid grid-cols-7 gap-y-6 gap-x-2 text-center text-sm">
                         {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
-                          <div key={day} className="text-stone-400 font-medium text-xs">{day}</div>
+                          <div key={day} className="text-stone-400 dark:text-slate-500 font-semibold text-xs tracking-wider uppercase">{day}</div>
                         ))}
                         
                         {/* Empty slots for start of month */}
@@ -438,10 +408,10 @@ export function ContactCTA() {
                             <div key={date} className="flex justify-center">
                               <button 
                                 onClick={() => setSelectedDateObj(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), date))}
-                                className={`w-8 h-8 rounded-full flex items-center justify-center font-medium transition-colors
+                                className={`w-9 h-9 rounded-full flex items-center justify-center font-medium transition-all duration-300
                                   ${isSelected 
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' 
-                                    : 'text-stone-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600'
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-110' 
+                                    : 'text-stone-700 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-slate-800 hover:text-stone-900 dark:hover:text-white'
                                   }`}
                               >
                                 {date}
@@ -453,23 +423,54 @@ export function ContactCTA() {
                     </div>
 
                     {/* Time Slots */}
-                    <div className="w-full md:w-48 flex flex-col gap-3">
-                      <div className="text-sm font-semibold text-stone-700 dark:text-slate-300 mb-2 md:mb-5">3. Pick a time</div>
-                      <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="w-full md:w-[180px] flex flex-col gap-4">
+                      <div className="text-sm font-bold text-stone-900 dark:text-white mb-2 md:mb-4">Select Time</div>
+                      <div className="flex flex-col gap-2.5 max-h-[280px] overflow-y-auto pr-3 custom-scrollbar">
                         {['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM'].map(time => (
                           <button 
                             key={time}
                             onClick={() => setSelectedTime(time)}
-                            className={`w-full py-2 border rounded-md text-sm font-medium transition-colors
+                            className={`w-full py-3 border rounded-xl text-sm font-semibold transition-all duration-300
                               ${selectedTime === time
-                                ? 'border-blue-600 bg-blue-600 text-white'
-                                : 'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                                ? 'border-blue-600 bg-blue-600 text-white shadow-md'
+                                : 'border-stone-200 dark:border-slate-700 text-stone-700 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400'
                               }`}
                           >
                             {time}
                           </button>
                         ))}
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="h-px w-full bg-stone-100 dark:bg-slate-800/80"></div>
+
+                  {/* Email Input - Modern sleek style */}
+                  <div className="w-full">
+                    <label className="block text-sm font-semibold text-stone-900 dark:text-white mb-3">Enter your email to book</label>
+                    <div className="flex flex-col sm:flex-row gap-4 items-start">
+                      <div className="flex-1 w-full flex flex-col">
+                        <input 
+                          type="email" 
+                          value={bookCallEmail}
+                          onChange={(e) => {
+                            setBookCallEmail(e.target.value)
+                            setBookCallErrorText('')
+                          }}
+                          placeholder="hello@example.com"
+                          className={`w-full px-5 py-3.5 rounded-xl border ${bookCallErrorText ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : 'border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800/50'} text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-stone-900 dark:text-slate-100 transition-all shadow-sm`}
+                          disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
+                        />
+                        {bookCallErrorText && <p className="text-red-500 text-xs mt-2 px-1 font-medium">{bookCallErrorText}</p>}
+                      </div>
+                      <button 
+                        onClick={handleBookCall}
+                        disabled={bookCallStatus === 'sending' || bookCallStatus === 'success'}
+                        className="w-full sm:w-auto shrink-0 px-8 py-3.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        {bookCallStatus === 'sending' && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {bookCallStatus === 'success' ? 'Booking Confirmed' : 'Confirm Booking'}
+                      </button>
                     </div>
                   </div>
                 </div>

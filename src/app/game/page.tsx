@@ -6,26 +6,26 @@ import { Gamepad2, Bug, ArrowLeft } from 'lucide-react'
 
 export default function GameHubPage() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans flex flex-col items-center justify-center p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white font-sans flex flex-col items-center justify-center p-6 pt-24 md:p-8 relative overflow-hidden">
       
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
 
       {/* Back Button */}
-      <Link href="/" className="absolute top-8 left-8 text-zinc-400 hover:text-white transition-colors flex items-center gap-2 z-10">
-        <ArrowLeft size={20} />
+      <Link href="/" className="absolute top-6 left-6 md:top-8 md:left-8 text-zinc-400 hover:text-white transition-colors flex items-center gap-2 z-10 text-sm md:text-base">
+        <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         Back to Portfolio
       </Link>
 
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-16 z-10"
+        className="text-center mb-10 md:mb-16 z-10"
       >
-        <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-3 md:mb-4">
           Game Hub
         </h1>
-        <p className="text-zinc-400 text-lg max-w-lg mx-auto">
+        <p className="text-zinc-400 text-base md:text-lg max-w-lg mx-auto">
           Choose a game to play. Explore my interactive portfolio or destroy some bugs!
         </p>
       </motion.div>
